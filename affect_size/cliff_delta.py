@@ -4,7 +4,9 @@ from numpy import sqrt
 from scipy.stats import norm
 
 
-def cliff_delta(s1: Iterable, s2: Iterable, alpha: int = 0.05) -> Tuple[float, Tuple[float, float]]:
+def cliff_delta(
+    s1: Iterable, s2: Iterable, alpha: int = 0.05, accurate_ci: bool = False
+) -> Tuple[float, Tuple[float, float]]:
     """Calculate Cliff's Delta between two samples. 
 
     The current implementation is not very efficient. For a better version,
@@ -18,6 +20,8 @@ def cliff_delta(s1: Iterable, s2: Iterable, alpha: int = 0.05) -> Tuple[float, T
         second sample
     alpha : int, optional
         significance level, by default 0.05
+    accurate_ci: bool, optional
+        if True, the confidence interval is calculated using the more accurate formula
 
     Returns
     -------
@@ -69,9 +73,23 @@ def cliff_delta(s1: Iterable, s2: Iterable, alpha: int = 0.05) -> Tuple[float, T
         )
         / (n * m * (n - 1) * (m - 1))
     )
-
-    ci_size: float = delta_std * norm.ppf(1 - alpha / 2)
-    return delta_val, (delta_val - ci_size, delta_val + ci_size)
+    z_crit: float = norm.ppf(1 - alpha / 2)
+    if not accurate_ci:
+        ci_size: float = delta_std * z_crit
+        return delta_val, (delta_val - ci_size, delta_val + ci_size)
+    else:
+        ci_size: float = z_crit * delta_std * sqrt(
+            1 - 2 * delta_val ** 2 + delta_val ** 4 + (z_crit * delta_std) ** 2
+        )
+        denom_corretion: float = 1 - delta_val ** 2 + (z_crit * delta_std) ** 2
+        print(denom_corretion)
+        return (
+            delta_val,
+            (
+                (delta_val - delta_val ** 3 - ci_size) / denom_corretion,
+                (delta_val - delta_val ** 3 + ci_size) / denom_corretion,
+            ),
+        )
 
 
 def delta(x: Union[float, int], y: Union[float, int]) -> int:
