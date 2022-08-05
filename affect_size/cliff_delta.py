@@ -88,7 +88,6 @@ def cliff_delta(
             1 - 2 * delta_val ** 2 + delta_val ** 4 + (z_crit * delta_std) ** 2
         )
         denom_corretion: float = 1 - delta_val ** 2 + (z_crit * delta_std) ** 2
-        print(denom_corretion)
         return (
             delta_val,
             (
