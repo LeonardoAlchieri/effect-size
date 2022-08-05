@@ -1,11 +1,15 @@
 from typing import Iterable, Tuple, Union
 
-from numpy import sqrt
+from numpy import sqrt, isnan, nan
 from scipy.stats import norm
 
 
 def cliff_delta(
-    s1: Iterable, s2: Iterable, alpha: int = 0.05, accurate_ci: bool = False
+    s1: Iterable,
+    s2: Iterable,
+    alpha: int = 0.05,
+    accurate_ci: bool = False,
+    raise_nan: bool = True,
 ) -> Tuple[float, Tuple[float, float]]:
     """Calculate Cliff's Delta between two samples. 
 
@@ -20,8 +24,10 @@ def cliff_delta(
         second sample
     alpha : int, optional
         significance level, by default 0.05
-    accurate_ci: bool, optional
+    accurate_ci : bool, optional
         if True, the confidence interval is calculated using the more accurate formula
+    raise_nan : bool, optional
+        if True, an error is raised if NaN is found in the samples. If False, NaN is ignored.
 
     Returns
     -------
@@ -92,7 +98,9 @@ def cliff_delta(
         )
 
 
-def delta(x: Union[float, int], y: Union[float, int]) -> int:
+def delta(
+    x: Union[float, int], y: Union[float, int], raise_nan: bool = True
+) -> Union[int, float]:
     """Calculate delta between two values, i.e. return 1 if the 
     first is larger, -1 if the second is larger and 0 if the two are equal.
 
@@ -102,18 +110,19 @@ def delta(x: Union[float, int], y: Union[float, int]) -> int:
         first value
     y : Union[float, int]
         second value
+    raise_nan : bool, optional
+        if True, an error is raised if NaN is found in the samples. If False, NaN is ignored.
 
     Returns
     -------
-    int
+    int or float
         delta between x and y
 
     Raises
     ------
     ValueError
         if x and y are neither larger, smaller or equal, something has gone
-        amiss. Usually, the reason may be the presence of NaN, and as such 
-        the code will throw an error.
+        amiss. If raise_nan is True, an error is raised even if the samples are NaN.
     """
     if x > y:
         return 1
@@ -122,8 +131,14 @@ def delta(x: Union[float, int], y: Union[float, int]) -> int:
     elif x == y:
         return 0
     else:
-        raise ValueError(
-            "x and y are neither larger, nor smaller, nor equal. Values received: x = {}, y = {}".format(
+        if isnan(x) or isnan(y):
+            if raise_nan:
+                raise ValueError("NaN found in samples")
+            else:
+                return nan
+        else:
+            raise ValueError(
+            "x and y are neither larger, nor smaller, nor equal, nor nan. Values received: x = {}, y = {}".format(
                 x, y
             )
         )
