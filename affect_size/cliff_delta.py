@@ -50,7 +50,7 @@ def cliff_delta(
     # TODO: implement w/ numpy
     m: int = len(s1)
     n: int = len(s2)
-    delta_val: float = sum((delta(i, j) for i in s1 for j in s2)) / (m * n)
+    delta_val: float = sum((delta(i, j, raise_nan=raise_nan) for i in s1 for j in s2)) / (m * n)
 
     if alpha > 1:
         raise ValueError("alpha must be between 0 and 1. Received: {}".format(alpha))
@@ -61,7 +61,7 @@ def cliff_delta(
                 m ** 2
                 * sum(
                     (
-                        (1 / n * sum((delta(i, j) for j in s2)) - delta_val) ** 2
+                        (1 / n * sum((delta(i, j, raise_nan=raise_nan) for j in s2)) - delta_val) ** 2
                         for i in s1
                     )
                 )
@@ -70,12 +70,12 @@ def cliff_delta(
                 n ** 2
                 * sum(
                     (
-                        (1 / m * sum((delta(i, j) for i in s1)) - delta_val) ** 2
+                        (1 / m * sum((delta(i, j, raise_nan=raise_nan) for i in s1)) - delta_val) ** 2
                         for j in s2
                     )
                 )
             )
-            - sum(((delta(i, j) - delta_val) ** 2 for i in s1 for j in s2))
+            - sum(((delta(i, j, raise_nan=raise_nan) - delta_val) ** 2 for i in s1 for j in s2))
         )
         / (n * m * (n - 1) * (m - 1))
     )
