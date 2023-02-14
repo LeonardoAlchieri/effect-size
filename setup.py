@@ -7,7 +7,7 @@ with open(path.join(path.abspath(path.dirname(__file__)), "README.md")) as f:
     readme = f.read()
 
 setup(
-    name='affect_size',
+    name='effect_size',
     version="0.1.0",
     license='MIT',
     url='https://github.com/LeonardoAlchieri/affect-size',
@@ -16,8 +16,8 @@ setup(
     description='Some affect size methods',
     long_description=readme,
     long_description_content_type="text/markdown",
-    keywords=['affect', 'size', 'delta', 'cliff','confidence interval'],
-    packages=['affect_size'],
+    keywords=['effect', 'size', 'delta', 'cliff','confidence interval'],
+    packages=['effect_size'],
     # py_modules=['apple_heartrate_pandas'],
     classifiers=[
         "Programming Language :: Python",
