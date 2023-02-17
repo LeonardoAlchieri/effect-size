@@ -11,7 +11,7 @@ At the moment, only Cliff's δ is implemented. The other effect sizes will be ad
 ## Usage
 
 ```python
-from effect_size import cliff_delta
+from effect_size_analysis import cliff_delta
 from numpy.random import rand
 
 x: ndarray = rand(100)
