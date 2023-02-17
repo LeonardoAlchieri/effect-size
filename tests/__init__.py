@@ -1,7 +1,7 @@
 import numpy as np
 from sys import path
 path.append('./')
-from effect_size.cliff_delta import cliff_delta
+from effect_size_analysis.cliff_delta import cliff_delta
 
 x1 = np.random.rand(1009) * 10
 x2 = np.random.rand(1009) * 4
