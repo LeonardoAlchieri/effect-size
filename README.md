@@ -21,4 +21,4 @@ cliff_delta(s1=x,s2=y,alpha=0.05,accurate_ci=True)
 ```
 (0.0136, (-0.1455859031658134, 0.17209949612394954))
 ```
-The first value is the delta value, while the second tuple represents the confidence interval al 95%.
+The first value is the delta value, while the second tuple represents the confidence interval.
