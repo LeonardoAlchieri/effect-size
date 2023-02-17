@@ -6,7 +6,7 @@
 
 Python package to calculate affect sizes (Cohen's δ, Hedge's g, Cliff's δ and Vargha-Delaney's A)
 
-At the moment, only Cliff's delta is implemented. The other effect sizes will be added soon.
+At the moment, only Cliff's δ is implemented. The other effect sizes will be added soon.
 
 ## Usage
 
